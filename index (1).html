@@ -1,0 +1,1555 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>¿Quién quiere ser millonario?</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --blue:#06133f;
+    --blue2:#0b2470;
+    --cyan:#19c8ff;
+    --gold:#ffd700;
+    --white:#ffffff;
+    --green:#18d26e;
+    --red:#ff304f;
+}
+
+body{
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    color:white;
+    background:
+        radial-gradient(circle at center,#142f88 0%,#071642 38%,#020617 85%);
+    overflow-x:hidden;
+}
+
+/* Fondo animado */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 40%,rgba(0,174,255,.16),transparent 30%),
+        repeating-radial-gradient(
+            circle at center,
+            transparent 0,
+            transparent 60px,
+            rgba(0,180,255,.025) 61px,
+            transparent 62px
+        );
+    pointer-events:none;
+    animation:pulseBackground 5s infinite alternate;
+}
+
+@keyframes pulseBackground{
+    from{opacity:.55}
+    to{opacity:1}
+}
+
+/* INTRO */
+
+#intro{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    background:
+        radial-gradient(circle,#102e91,#020617 70%);
+    transition:1s;
+}
+
+.logo{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    border:5px solid var(--gold);
+    box-shadow:
+        0 0 25px var(--gold),
+        0 0 70px rgba(0,190,255,.5),
+        inset 0 0 40px #071b6e;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:25px;
+    animation:logoPulse 2s infinite;
+}
+
+.logo span{
+    font-family:Orbitron;
+    font-size:55px;
+    font-weight:900;
+    color:var(--gold);
+    text-shadow:0 0 20px #ffb300;
+}
+
+@keyframes logoPulse{
+    50%{
+        transform:scale(1.05);
+        box-shadow:
+        0 0 45px var(--gold),
+        0 0 100px rgba(0,190,255,.7);
+    }
+}
+
+.introTitle{
+    font-family:Orbitron;
+    font-size:clamp(28px,6vw,65px);
+    color:white;
+    text-shadow:
+        0 0 10px #00bfff,
+        0 0 30px #0066ff;
+    margin-bottom:10px;
+}
+
+.introSubtitle{
+    color:#a8dfff;
+    margin-bottom:35px;
+}
+
+.startButton{
+    border:none;
+    cursor:pointer;
+    padding:17px 50px;
+    border-radius:50px;
+    font-family:Orbitron;
+    font-weight:800;
+    font-size:18px;
+    color:#00113f;
+    background:linear-gradient(135deg,#fff,#ffd700);
+    box-shadow:0 0 25px #ffd700;
+    transition:.3s;
+}
+
+.startButton:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 45px #ffd700;
+}
+
+/* GAME */
+
+#game{
+    display:none;
+    min-height:100vh;
+    position:relative;
+    z-index:1;
+}
+
+header{
+    height:75px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 30px;
+    border-bottom:1px solid rgba(255,255,255,.15);
+    background:rgba(0,0,30,.35);
+    backdrop-filter:blur(15px);
+}
+
+.brand{
+    font-family:Orbitron;
+    color:var(--gold);
+    font-weight:900;
+    letter-spacing:2px;
+}
+
+.moneyTop{
+    font-family:Orbitron;
+    color:white;
+    font-size:22px;
+    font-weight:800;
+}
+
+.soundBtn{
+    border:1px solid rgba(255,255,255,.3);
+    background:rgba(0,0,0,.3);
+    color:white;
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    cursor:pointer;
+    font-size:20px;
+}
+
+/* LAYOUT */
+
+.gameLayout{
+    max-width:1500px;
+    margin:auto;
+    display:grid;
+    grid-template-columns:240px 1fr;
+    gap:35px;
+    padding:30px;
+}
+
+/* ESCALERA */
+
+.moneyTree{
+    background:rgba(2,12,45,.75);
+    border:1px solid rgba(0,190,255,.3);
+    border-radius:20px;
+    padding:18px;
+    box-shadow:0 0 30px rgba(0,0,0,.4);
+}
+
+.moneyTree h3{
+    text-align:center;
+    color:var(--gold);
+    font-family:Orbitron;
+    margin-bottom:12px;
+}
+
+.moneyItem{
+    display:flex;
+    justify-content:space-between;
+    padding:7px 10px;
+    border-radius:7px;
+    color:#b5cfff;
+    font-size:14px;
+    transition:.3s;
+}
+
+.moneyItem:nth-child(odd){
+    background:rgba(255,255,255,.025);
+}
+
+.moneyItem.active{
+    background:linear-gradient(90deg,#ffd700,#ff9d00);
+    color:#07133d;
+    font-weight:900;
+    transform:scale(1.06);
+    box-shadow:0 0 18px #ffd700;
+}
+
+.moneyItem.safe{
+    color:white;
+    font-weight:800;
+}
+
+.moneyItem span:first-child{
+    color:inherit;
+}
+
+/* CONTENIDO */
+
+.main{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.questionNumber{
+    font-family:Orbitron;
+    color:#77dcff;
+    font-size:15px;
+    letter-spacing:2px;
+    margin-bottom:12px;
+}
+
+.questionBox{
+    width:min(850px,100%);
+    min-height:150px;
+    padding:35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    border-radius:25px;
+    border:2px solid rgba(45,198,255,.6);
+    background:
+        linear-gradient(145deg,
+        rgba(15,48,126,.9),
+        rgba(2,11,44,.96));
+    box-shadow:
+        0 0 30px rgba(0,162,255,.18),
+        inset 0 0 40px rgba(0,100,255,.08);
+    position:relative;
+}
+
+.questionBox::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    border-radius:25px;
+    border:1px solid transparent;
+    background:linear-gradient(90deg,transparent,#00d9ff,transparent);
+    mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    mask-composite:exclude;
+    animation:borderMove 3s linear infinite;
+}
+
+@keyframes borderMove{
+    to{transform:rotate(360deg)}
+}
+
+.question{
+    font-size:clamp(18px,2.4vw,28px);
+    font-weight:700;
+    line-height:1.4;
+}
+
+/* OPCIONES */
+
+.answers{
+    width:min(850px,100%);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:22px;
+}
+
+.answer{
+    min-height:75px;
+    padding:15px 20px;
+    border-radius:50px;
+    border:2px solid #286ac5;
+    background:linear-gradient(90deg,#071747,#102d77);
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    text-align:left;
+    transition:.25s;
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.answer:hover:not(.disabled){
+    transform:translateY(-3px);
+    border-color:#00d9ff;
+    box-shadow:0 0 20px rgba(0,210,255,.35);
+    background:linear-gradient(90deg,#0c2a73,#1647a8);
+}
+
+.answer .letter{
+    color:var(--gold);
+    font-family:Orbitron;
+    font-weight:900;
+}
+
+.answer.correct{
+    background:linear-gradient(90deg,#087638,#19c96a);
+    border-color:#7dffb0;
+    color:white;
+    animation:correctFlash .6s infinite alternate;
+}
+
+.answer.wrong{
+    background:linear-gradient(90deg,#6f0b1b,#dc1735);
+    border-color:#ff6a7e;
+    animation:shake .4s;
+}
+
+.answer.disabled{
+    opacity:.2;
+    cursor:not-allowed;
+}
+
+@keyframes correctFlash{
+    from{box-shadow:0 0 5px #19ff72}
+    to{box-shadow:0 0 30px #19ff72}
+}
+
+@keyframes shake{
+    20%{transform:translateX(-8px)}
+    40%{transform:translateX(8px)}
+    60%{transform:translateX(-5px)}
+    80%{transform:translateX(5px)}
+}
+
+/* COMODINES */
+
+.lifelines{
+    margin-top:25px;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.life{
+    width:170px;
+    padding:13px 15px;
+    border-radius:12px;
+    border:1px solid #3183e7;
+    background:rgba(5,25,75,.75);
+    color:white;
+    cursor:pointer;
+    font-weight:700;
+    transition:.3s;
+}
+
+.life:hover:not(.used){
+    background:#12479b;
+    transform:translateY(-3px);
+    box-shadow:0 0 18px #00aaff;
+}
+
+.life.used{
+    opacity:.25;
+    text-decoration:line-through;
+    cursor:not-allowed;
+}
+
+.timerContainer{
+    margin-top:22px;
+    width:min(500px,90%);
+}
+
+.timerBar{
+    height:8px;
+    background:#162448;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.timerProgress{
+    height:100%;
+    width:100%;
+    background:linear-gradient(90deg,#20ff7b,#ffe600,#ff274c);
+    transition:width 1s linear;
+}
+
+.timerText{
+    text-align:center;
+    font-family:Orbitron;
+    font-size:18px;
+    margin-top:7px;
+    color:#c8e8ff;
+}
+
+/* MODALES */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,10,.82);
+    backdrop-filter:blur(8px);
+    z-index:50;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modalBox{
+    width:min(600px,100%);
+    background:linear-gradient(145deg,#102b78,#030d32);
+    border:2px solid #2caaff;
+    border-radius:25px;
+    padding:35px;
+    text-align:center;
+    box-shadow:0 0 60px rgba(0,180,255,.35);
+}
+
+.modalBox h2{
+    font-family:Orbitron;
+    color:var(--gold);
+    margin-bottom:20px;
+}
+
+.closeBtn{
+    margin-top:20px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:#ffd700;
+    color:#07133d;
+    font-weight:900;
+    cursor:pointer;
+}
+
+/* PÚBLICO */
+
+.audienceBars{
+    display:flex;
+    justify-content:space-around;
+    align-items:flex-end;
+    height:220px;
+    margin:25px 0;
+}
+
+.barWrap{
+    width:18%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    height:100%;
+}
+
+.bar{
+    background:linear-gradient(#36d9ff,#1551d4);
+    border-radius:10px 10px 0 0;
+    height:20%;
+    transition:1s;
+    box-shadow:0 0 15px rgba(0,190,255,.4);
+}
+
+.barLabel{
+    margin-top:8px;
+    font-weight:900;
+}
+
+.percent{
+    margin-bottom:5px;
+}
+
+/* FINAL */
+
+.resultMoney{
+    font-family:Orbitron;
+    font-size:clamp(35px,8vw,75px);
+    color:var(--gold);
+    text-shadow:0 0 25px #ffbd00;
+    margin:20px 0;
+}
+
+.finalTitle{
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.playAgain{
+    border:none;
+    padding:15px 40px;
+    border-radius:40px;
+    background:linear-gradient(135deg,#ffd700,#ff9c00);
+    font-weight:900;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+    .gameLayout{
+        grid-template-columns:1fr;
+        padding:15px;
+    }
+
+    .moneyTree{
+        order:2;
+    }
+
+    .main{
+        order:1;
+    }
+
+    .moneyTree{
+        display:grid;
+        grid-template-columns:repeat(3,1fr);
+        gap:3px;
+    }
+
+    .moneyTree h3{
+        grid-column:1/-1;
+    }
+
+}
+
+@media(max-width:600px){
+
+    header{
+        padding:0 15px;
+    }
+
+    .brand{
+        font-size:12px;
+    }
+
+    .moneyTop{
+        font-size:15px;
+    }
+
+    .answers{
+        grid-template-columns:1fr;
+    }
+
+    .questionBox{
+        padding:25px 18px;
+    }
+
+    .answer{
+        min-height:65px;
+    }
+
+    .moneyTree{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .life{
+        width:140px;
+        font-size:12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+
+<section id="intro">
+
+    <div class="logo">
+        <span>$</span>
+    </div>
+
+    <h1 class="introTitle">
+        ¿QUIÉN QUIERE SER<br>MILLONARIO?
+    </h1>
+
+    <p class="introSubtitle">
+        15 preguntas · 1 millón de dólares · ¿Hasta dónde puedes llegar?
+    </p>
+
+    <button class="startButton" onclick="startGame()">
+        ▶ COMENZAR
+    </button>
+
+</section>
+
+
+<!-- JUEGO -->
+
+<div id="game">
+
+<header>
+
+    <div class="brand">
+        MILLONARIO
+    </div>
+
+    <div class="moneyTop" id="topMoney">
+        $0
+    </div>
+
+    <button class="soundBtn" id="soundBtn" onclick="toggleSound()">
+        🔊
+    </button>
+
+</header>
+
+
+<div class="gameLayout">
+
+    <!-- ESCALERA -->
+
+    <aside class="moneyTree">
+
+        <h3>ESCALERA</h3>
+
+        <div class="moneyItem" id="money15">
+            <span>15</span>
+            <span>$1.000.000</span>
+        </div>
+
+        <div class="moneyItem" id="money14">
+            <span>14</span>
+            <span>$500.000</span>
+        </div>
+
+        <div class="moneyItem" id="money13">
+            <span>13</span>
+            <span>$250.000</span>
+        </div>
+
+        <div class="moneyItem" id="money12">
+            <span>12</span>
+            <span>$125.000</span>
+        </div>
+
+        <div class="moneyItem safe" id="money11">
+            <span>11</span>
+            <span>$64.000</span>
+        </div>
+
+        <div class="moneyItem" id="money10">
+            <span>10</span>
+            <span>$32.000</span>
+        </div>
+
+        <div class="moneyItem" id="money9">
+            <span>9</span>
+            <span>$16.000</span>
+        </div>
+
+        <div class="moneyItem" id="money8">
+            <span>8</span>
+            <span>$8.000</span>
+        </div>
+
+        <div class="moneyItem" id="money7">
+            <span>7</span>
+            <span>$4.000</span>
+        </div>
+
+        <div class="moneyItem" id="money6">
+            <span>6</span>
+            <span>$2.000</span>
+        </div>
+
+        <div class="moneyItem safe" id="money5">
+            <span>5</span>
+            <span>$1.000</span>
+        </div>
+
+        <div class="moneyItem" id="money4">
+            <span>4</span>
+            <span>$500</span>
+        </div>
+
+        <div class="moneyItem" id="money3">
+            <span>3</span>
+            <span>$300</span>
+        </div>
+
+        <div class="moneyItem" id="money2">
+            <span>2</span>
+            <span>$200</span>
+        </div>
+
+        <div class="moneyItem" id="money1">
+            <span>1</span>
+            <span>$100</span>
+        </div>
+
+    </aside>
+
+
+    <!-- PREGUNTA -->
+
+    <main class="main">
+
+        <div class="questionNumber" id="questionNumber">
+            PREGUNTA 1 DE 15
+        </div>
+
+        <div class="questionBox">
+            <div class="question" id="question">
+                Preparando pregunta...
+            </div>
+        </div>
+
+        <div class="answers" id="answers"></div>
+
+
+        <!-- COMODINES -->
+
+        <div class="lifelines">
+
+            <button class="life" id="fifty" onclick="fiftyFifty()">
+                50:50
+            </button>
+
+            <button class="life" id="audience" onclick="askAudience()">
+                👥 PÚBLICO
+            </button>
+
+            <button class="life" id="phone" onclick="phoneFriend()">
+                📞 AMIGO
+            </button>
+
+        </div>
+
+
+        <!-- TEMPORIZADOR -->
+
+        <div class="timerContainer">
+
+            <div class="timerBar">
+                <div class="timerProgress" id="timerProgress"></div>
+            </div>
+
+            <div class="timerText">
+                ⏱ <span id="timer">30</span>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+</div>
+
+
+<!-- MODAL COMODÍN -->
+
+<div class="modal" id="modal">
+
+    <div class="modalBox">
+
+        <h2 id="modalTitle">COMODÍN</h2>
+
+        <div id="modalContent"></div>
+
+        <button class="closeBtn" onclick="closeModal()">
+            CONTINUAR
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL FINAL -->
+
+<div class="modal" id="finalModal">
+
+    <div class="modalBox">
+
+        <div class="finalTitle" id="finalTitle">
+            ¡FIN DEL JUEGO!
+        </div>
+
+        <div class="resultMoney" id="finalMoney">
+            $0
+        </div>
+
+        <p id="finalMessage"></p>
+
+        <br>
+
+        <button class="playAgain" onclick="location.reload()">
+            🔄 JUGAR DE NUEVO
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================================
+   PREGUNTAS
+========================================================== */
+
+const questions = [
+
+{
+q:"¿Cuál es el planeta más grande del sistema solar?",
+options:["Marte","Júpiter","Saturno","Neptuno"],
+correct:1
+},
+
+{
+q:"¿Cuál es la capital de Australia?",
+options:["Sídney","Melbourne","Canberra","Perth"],
+correct:2
+},
+
+{
+q:"¿Quién escribió 'Cien años de soledad'?",
+options:["Mario Vargas Llosa","Gabriel García Márquez","Pablo Neruda","Jorge Luis Borges"],
+correct:1
+},
+
+{
+q:"¿Cuántos lados tiene un hexágono?",
+options:["5","6","7","8"],
+correct:1
+},
+
+{
+q:"¿En qué continente se encuentra Egipto?",
+options:["Asia","Europa","África","Oceanía"],
+correct:2
+},
+
+{
+q:"¿Cuál es el elemento químico cuyo símbolo es O?",
+options:["Oro","Oxígeno","Osmio","Ozono"],
+correct:1
+},
+
+{
+q:"¿Cuál es el océano más grande del planeta?",
+options:["Atlántico","Índico","Pacífico","Ártico"],
+correct:2
+},
+
+{
+q:"¿Quién pintó la Mona Lisa?",
+options:["Vincent van Gogh","Leonardo da Vinci","Pablo Picasso","Miguel Ángel"],
+correct:1
+},
+
+{
+q:"¿Cuántos jugadores tiene un equipo de fútbol en el campo?",
+options:["9","10","11","12"],
+correct:2
+},
+
+{
+q:"¿Cuál es el idioma con más hablantes nativos del mundo?",
+options:["Inglés","Español","Mandarín","Francés"],
+correct:2
+},
+
+{
+q:"¿En qué año llegó el ser humano a la Luna por primera vez?",
+options:["1965","1967","1969","1972"],
+correct:2
+},
+
+{
+q:"¿Cuál es el animal terrestre más rápido?",
+options:["León","Guepardo","Caballo","Antílope"],
+correct:1
+},
+
+{
+q:"¿Cuál es la moneda oficial de Japón?",
+options:["Won","Yuan","Yen","Rupia"],
+correct:2
+},
+
+{
+q:"¿Qué científico desarrolló la teoría de la relatividad?",
+options:["Isaac Newton","Albert Einstein","Galileo Galilei","Nikola Tesla"],
+correct:1
+},
+
+{
+q:"¿Cuál es el metal cuyo símbolo químico es Au?",
+options:["Plata","Cobre","Oro","Hierro"],
+correct:2
+}
+
+];
+
+
+/* ==========================================================
+   DINERO
+========================================================== */
+
+const prizes = [
+100,
+200,
+300,
+500,
+1000,
+2000,
+4000,
+8000,
+16000,
+32000,
+64000,
+125000,
+250000,
+500000,
+1000000
+];
+
+let currentQuestion = 0;
+let money = 0;
+let timer = 30;
+let timerInterval;
+let soundEnabled = true;
+
+let usedFifty = false;
+let usedAudience = false;
+let usedPhone = false;
+
+
+/* ==========================================================
+   AUDIO — MÚSICA ORIGINAL GENERADA POR EL NAVEGADOR
+========================================================== */
+
+let audioContext;
+let musicInterval;
+let musicNodes = [];
+
+function initAudio(){
+
+    if(audioContext) return;
+
+    audioContext =
+        new (window.AudioContext || window.webkitAudioContext)();
+
+    playMusic();
+
+}
+
+
+function tone(freq,duration,type="sine",volume=.04){
+
+    if(!soundEnabled || !audioContext) return;
+
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+
+    osc.type=type;
+    osc.frequency.value=freq;
+
+    gain.gain.setValueAtTime(volume,audioContext.currentTime);
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        audioContext.currentTime+duration
+    );
+
+    osc.connect(gain);
+    gain.connect(audioContext.destination);
+
+    osc.start();
+    osc.stop(audioContext.currentTime+duration);
+}
+
+
+function playMusic(){
+
+    if(!soundEnabled || !audioContext) return;
+
+    clearInterval(musicInterval);
+
+    /*
+       Música ORIGINAL de tensión.
+       No utiliza la grabación de la serie.
+    */
+
+    const notes=[
+        65.41,
+        73.42,
+        82.41,
+        73.42,
+        65.41,
+        87.31,
+        82.41,
+        73.42
+    ];
+
+    let index=0;
+
+    musicInterval=setInterval(()=>{
+
+        if(!soundEnabled) return;
+
+        let intensity=1 + currentQuestion*.025;
+
+        tone(
+            notes[index%notes.length]*intensity,
+            .55,
+            "triangle",
+            .018
+        );
+
+        tone(
+            notes[index%notes.length]*2*intensity,
+            .25,
+            "sine",
+            .009
+        );
+
+        index++;
+
+    },650);
+}
+
+
+function correctSound(){
+
+    tone(523,.15,"sine",.08);
+    setTimeout(()=>tone(659,.15,"sine",.08),100);
+    setTimeout(()=>tone(784,.35,"sine",.08),200);
+
+}
+
+
+function wrongSound(){
+
+    tone(180,.4,"sawtooth",.07);
+    setTimeout(()=>tone(130,.6,"sawtooth",.07),250);
+
+}
+
+
+function clickSound(){
+
+    tone(500,.07,"square",.025);
+
+}
+
+
+function toggleSound(){
+
+    soundEnabled=!soundEnabled;
+
+    document.getElementById("soundBtn").textContent=
+        soundEnabled ? "🔊" : "🔇";
+
+    if(soundEnabled){
+
+        initAudio();
+        playMusic();
+
+    }else{
+
+        clearInterval(musicInterval);
+
+    }
+
+}
+
+
+/* ==========================================================
+   INICIAR
+========================================================== */
+
+function startGame(){
+
+    initAudio();
+
+    document.getElementById("intro").style.opacity="0";
+
+    setTimeout(()=>{
+
+        document.getElementById("intro").style.display="none";
+        document.getElementById("game").style.display="block";
+
+        loadQuestion();
+
+    },800);
+
+}
+
+
+/* ==========================================================
+   CARGAR PREGUNTA
+========================================================== */
+
+function loadQuestion(){
+
+    clearInterval(timerInterval);
+
+    timer=30;
+
+    const q=questions[currentQuestion];
+
+    document.getElementById("questionNumber").textContent=
+        `PREGUNTA ${currentQuestion+1} DE 15`;
+
+    document.getElementById("question").textContent=q.q;
+
+    const answers=document.getElementById("answers");
+
+    answers.innerHTML="";
+
+    q.options.forEach((option,index)=>{
+
+        const button=document.createElement("button");
+
+        button.className="answer";
+
+        button.innerHTML=`
+            <span class="letter">${String.fromCharCode(65+index)}</span>
+            <span>${option}</span>
+        `;
+
+        button.onclick=()=>answerQuestion(index,button);
+
+        answers.appendChild(button);
+
+    });
+
+
+    updateMoneyTree();
+
+    startTimer();
+
+    playMusic();
+
+}
+
+
+/* ==========================================================
+   RESPONDER
+========================================================== */
+
+function answerQuestion(index,button){
+
+    clearInterval(timerInterval);
+
+    const q=questions[currentQuestion];
+
+    const buttons=document.querySelectorAll(".answer");
+
+    buttons.forEach(b=>b.classList.add("disabled"));
+
+    if(index===q.correct){
+
+        button.classList.remove("disabled");
+        button.classList.add("correct");
+
+        correctSound();
+
+        money=prizes[currentQuestion];
+
+        document.getElementById("topMoney").textContent=
+            "$"+money.toLocaleString("en-US");
+
+        updateMoneyTree();
+
+        setTimeout(()=>{
+
+            if(currentQuestion===14){
+
+                winGame();
+
+            }else{
+
+                currentQuestion++;
+
+                loadQuestion();
+
+            }
+
+        },1300);
+
+    }else{
+
+        button.classList.remove("disabled");
+        button.classList.add("wrong");
+
+        buttons[q.correct].classList.add("correct");
+
+        wrongSound();
+
+        setTimeout(()=>{
+
+            gameOver();
+
+        },1600);
+
+    }
+
+}
+
+
+/* ==========================================================
+   TEMPORIZADOR
+========================================================== */
+
+function startTimer(){
+
+    const timerElement=document.getElementById("timer");
+    const progress=document.getElementById("timerProgress");
+
+    timerElement.textContent=timer;
+    progress.style.width="100%";
+
+    timerInterval=setInterval(()=>{
+
+        timer--;
+
+        timerElement.textContent=timer;
+
+        progress.style.width=(timer/30*100)+"%";
+
+        if(timer<=10){
+
+            tone(400,.05,"square",.02);
+
+        }
+
+        if(timer<=0){
+
+            clearInterval(timerInterval);
+
+            gameOver();
+
+        }
+
+    },1000);
+
+}
+
+
+/* ==========================================================
+   ESCALERA
+========================================================== */
+
+function updateMoneyTree(){
+
+    document.querySelectorAll(".moneyItem")
+        .forEach(item=>item.classList.remove("active"));
+
+    const active=
+        document.getElementById("money"+(currentQuestion+1));
+
+    if(active){
+
+        active.classList.add("active");
+
+    }
+
+}
+
+
+/* ==========================================================
+   50:50
+========================================================== */
+
+function fiftyFifty(){
+
+    if(usedFifty) return;
+
+    usedFifty=true;
+
+    document.getElementById("fifty").classList.add("used");
+
+    clickSound();
+
+    const q=questions[currentQuestion];
+
+    const buttons=
+        document.querySelectorAll(".answer");
+
+    let wrong=[];
+
+    q.options.forEach((_,i)=>{
+
+        if(i!==q.correct) wrong.push(i);
+
+    });
+
+    wrong.sort(()=>Math.random()-.5);
+
+    wrong.slice(0,2).forEach(i=>{
+
+        buttons[i].classList.add("disabled");
+
+        buttons[i].onclick=null;
+
+    });
+
+}
+
+
+/* ==========================================================
+   PÚBLICO
+========================================================== */
+
+function askAudience(){
+
+    if(usedAudience) return;
+
+    usedAudience=true;
+
+    document.getElementById("audience").classList.add("used");
+
+    clickSound();
+
+    const q=questions[currentQuestion];
+
+    let percentages=[10,15,25,50];
+
+    let correct=q.correct;
+
+    let result=[0,0,0,0];
+
+    result[correct]=55+Math.floor(Math.random()*25);
+
+    let remaining=100-result[correct];
+
+    let others=[0,1,2,3].filter(i=>i!==correct);
+
+    let r1=Math.floor(Math.random()*remaining);
+
+    let r2=Math.floor(Math.random()*(remaining-r1));
+
+    let r3=remaining-r1-r2;
+
+    result[others[0]]=r1;
+    result[others[1]]=r2;
+    result[others[2]]=r3;
+
+    document.getElementById("modalTitle").textContent=
+        "👥 EL PÚBLICO HA VOTADO";
+
+    document.getElementById("modalContent").innerHTML=`
+
+        <div class="audienceBars">
+
+            ${result.map((p,i)=>`
+
+                <div class="barWrap">
+
+                    <div class="percent">${p}%</div>
+
+                    <div
+                        class="bar"
+                        style="height:${Math.max(p,5)}%"
+                    ></div>
+
+                    <div class="barLabel">
+                        ${String.fromCharCode(65+i)}
+                    </div>
+
+                </div>
+
+            `).join("")}
+
+        </div>
+
+        <p>
+            La mayoría del público cree que la respuesta
+            <strong>${String.fromCharCode(65+correct)}</strong>
+            es correcta.
+        </p>
+
+    `;
+
+    document.getElementById("modal").style.display="flex";
+
+}
+
+
+/* ==========================================================
+   AMIGO
+========================================================== */
+
+function phoneFriend(){
+
+    if(usedPhone) return;
+
+    usedPhone=true;
+
+    document.getElementById("phone").classList.add("used");
+
+    clickSound();
+
+    const q=questions[currentQuestion];
+
+    const confidence=
+        Math.floor(Math.random()*20)+75;
+
+    document.getElementById("modalTitle").textContent=
+        "📞 LLAMADA A TU AMIGO";
+
+    document.getElementById("modalContent").innerHTML=`
+
+        <div style="font-size:60px;margin:20px">📱</div>
+
+        <p style="font-size:20px;line-height:1.6">
+
+            "Mmm... estoy bastante seguro de que es
+            <strong style="color:#ffd700">
+            ${String.fromCharCode(65+q.correct)}
+            </strong>.
+
+            Diría que tengo un
+            <strong>${confidence}%</strong>
+            de confianza."
+
+        </p>
+
+    `;
+
+    document.getElementById("modal").style.display="flex";
+
+}
+
+
+/* ==========================================================
+   MODAL
+========================================================== */
+
+function closeModal(){
+
+    document.getElementById("modal").style.display="none";
+
+}
+
+
+/* ==========================================================
+   GAME OVER
+========================================================== */
+
+function gameOver(){
+
+    clearInterval(timerInterval);
+    clearInterval(musicInterval);
+
+    wrongSound();
+
+    let safeMoney=0;
+
+    if(currentQuestion>=10){
+        safeMoney=64000;
+    }else if(currentQuestion>=4){
+        safeMoney=1000;
+    }
+
+    document.getElementById("finalTitle").textContent=
+        "❌ RESPUESTA INCORRECTA";
+
+    document.getElementById("finalMoney").textContent=
+        "$"+safeMoney.toLocaleString("en-US");
+
+    document.getElementById("finalMessage").textContent=
+        `Has llegado hasta la pregunta ${currentQuestion+1}. 
+        Tu premio asegurado es de $${safeMoney.toLocaleString("en-US")}.`;
+
+    document.getElementById("finalModal").style.display="flex";
+
+}
+
+
+/* ==========================================================
+   GANAR
+========================================================== */
+
+function winGame(){
+
+    clearInterval(timerInterval);
+    clearInterval(musicInterval);
+
+    correctSound();
+
+    setTimeout(()=>{
+
+        document.getElementById("finalTitle").textContent=
+            "🏆 ¡ERES MILLONARIO!";
+
+        document.getElementById("finalMoney").textContent=
+            "$1.000.000";
+
+        document.getElementById("finalMessage").innerHTML=
+            `
+            ¡INCREÍBLE!<br><br>
+            Has respondido correctamente las 15 preguntas
+            y has conseguido el premio máximo.
+            <br><br>
+            💰 ¡UN MILLÓN DE DÓLARES! 💰
+            `;
+
+        document.getElementById("finalModal").style.display="flex";
+
+    },500);
+
+}
+
+</script>
+
+</body>
+</html>
